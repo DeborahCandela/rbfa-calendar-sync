@@ -122,7 +122,7 @@ async function main() {
   console.log("Fetching Bonheiden U15 B...");
   try {
     // You can also pass the teamId directly from your team URL
-    const bonheidenFixtures = await fetchFixtures("bonheiden-u15b");
+    const bonheidenFixtures = await fetchFixtures("381950");
     const icsContent = buildIcs("K.V. Bonheiden U15 B", bonheidenFixtures);
     await fs.writeFile(path.join(distDir, "bonheiden-u15b.ics"), icsContent, "utf8");
   } catch (err) {
@@ -132,7 +132,7 @@ async function main() {
   // Rijmenam U10 matches
   console.log("Fetching Rijmenam U10...");
   try {
-    const rijmenamFixtures = await fetchFixtures("rijmenam-u10");
+    const rijmenamFixtures = await fetchFixtures("384965");
     const icsContent = buildIcs("V.C. Rijmenam U10", rijmenamFixtures);
     await fs.writeFile(path.join(distDir, "rijmenam-u10.ics"), icsContent, "utf8");
   } catch (err) {
