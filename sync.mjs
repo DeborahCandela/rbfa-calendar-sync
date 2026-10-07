@@ -79,7 +79,7 @@ function buildIcs(calendarName, fixtures) {
 
     lines.push("BEGIN:VEVENT");
     lines.push(`UID:rbfa-${m.id}@rbfa-calendar-sync`);
-    lines.push(`DTSTAMP:${fmtDate(new Date())}`);
+    lines.push(`DTSTAMP:${fmtLocal(new Date())}`);
     lines.push(`DTSTART;TZID=Europe/Brussels:${fmtLocal(start)}`);
     lines.push(`DTEND;TZID=Europe/Brussels:${fmtLocal(end)}`);
     lines.push(`SUMMARY:${summary}`);
