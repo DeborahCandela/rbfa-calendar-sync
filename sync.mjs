@@ -65,10 +65,18 @@ function buildIcs(calendarName, fixtures) {
     const start = new Date(m.startTime);
     const end = new Date(start.getTime() + 90 * 60 * 1000); // 90 min match duration
 
-        const fmtLocal = (d) => {
-      const pad = (n) => String(n).padStart(2, "0");
+    const pad = (n) => String(n).padStart(2, "0");
+
+    // Local Belgian time for match start and end
+    const fmtLocal = (d) => {
       return `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
     };
+
+    // UTC timestamp required for DTSTAMP
+    const fmtUtc = (d) => {
+      return `${d.getUTCFullYear()}${pad(d.getUTCMonth() + 1)}${pad(d.getUTCDate())}T${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}${pad(d.getUTCSeconds())}Z`;
+    };
+
 
     const isCancelled = m.state === "CANCELLED" || m.state === "POSTPONED";
     const statusPrefix = isCancelled ? "[AFGELAST] " : "";
@@ -79,7 +87,7 @@ function buildIcs(calendarName, fixtures) {
 
     lines.push("BEGIN:VEVENT");
     lines.push(`UID:rbfa-${m.id}@rbfa-calendar-sync`);
-    lines.push(`DTSTAMP:${fmtLocal(new Date())}`);
+    lines.push(`DTSTAMP:${fmtUtc(new Date())}`);
     lines.push(`DTSTART;TZID=Europe/Brussels:${fmtLocal(start)}`);
     lines.push(`DTEND;TZID=Europe/Brussels:${fmtLocal(end)}`);
     lines.push(`SUMMARY:${summary}`);
