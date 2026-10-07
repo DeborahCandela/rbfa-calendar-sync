@@ -65,9 +65,9 @@ function buildIcs(calendarName, fixtures) {
     const start = new Date(m.startTime);
     const end = new Date(start.getTime() + 90 * 60 * 1000); // 90 min match duration
 
-    const fmtDate = (d) => {
+        const fmtLocal = (d) => {
       const pad = (n) => String(n).padStart(2, "0");
-      return `${d.getUTCFullYear()}${pad(d.getUTCMonth() + 1)}${pad(d.getUTCDate())}T${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}${pad(d.getUTCSeconds())}Z`;
+      return `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}T${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
     };
 
     const isCancelled = m.state === "CANCELLED" || m.state === "POSTPONED";
@@ -80,8 +80,8 @@ function buildIcs(calendarName, fixtures) {
     lines.push("BEGIN:VEVENT");
     lines.push(`UID:rbfa-${m.id}@rbfa-calendar-sync`);
     lines.push(`DTSTAMP:${fmtDate(new Date())}`);
-    lines.push(`DTSTART:${fmtDate(start)}`);
-    lines.push(`DTEND:${fmtDate(end)}`);
+    lines.push(`DTSTART;TZID=Europe/Brussels:${fmtLocal(start)}`);
+    lines.push(`DTEND;TZID=Europe/Brussels:${fmtLocal(end)}`);
     lines.push(`SUMMARY:${summary}`);
     if (m.series?.name) {
       lines.push(`DESCRIPTION:${m.series.name}`);
