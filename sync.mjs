@@ -122,6 +122,24 @@ async function fetchFixtures(teamId) {
   return data?.data?.teamCalendar || [];
 }
 
+async function logSchema() {
+  const res = await fetch(ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": AUTH,
+      "Origin": "https://www.voetbalvlaanderen.be",
+      "Referer": "https://www.voetbalvlaanderen.be/",
+      "User-Agent": "Mozilla/5.0"
+    },
+    body: JSON.stringify({
+      query: `{ match: __type(name: "Match") { fields { name } } venue: __type(name: "Venue") { fields { name } } }`
+    })
+  });
+  console.log(await res.text());
+}
+
+
 async function main() {
   const distDir = path.resolve("dist");
   await fs.mkdir(distDir, { recursive: true });
