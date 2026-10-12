@@ -141,6 +141,9 @@ async function logSchema() {
 
 
 async function main() {
+  
+  await logSchema();
+  
   const distDir = path.resolve("dist");
   await fs.mkdir(distDir, { recursive: true });
 
