@@ -94,18 +94,17 @@ function buildIcs(calendarName, fixtures) {
       summary += ` (${m.outcome.homeTeamGoals}-${m.outcome.awayTeamGoals})`;
     }
 
-    const loc = m.location;
-    const cityLine = [loc?.postalCode, loc?.city].filter(Boolean).join(" ");
-    const address = [loc?.address, cityLine].filter(Boolean).join(", ");
-    if (address) lines.push(`LOCATION:${escapeIcs(address)}`);
-
-
     lines.push("BEGIN:VEVENT");
     lines.push(`UID:rbfa-${m.id}@rbfa-calendar-sync`);
     lines.push(`DTSTAMP:${fmtUtc(new Date())}`);
     lines.push(`DTSTART;TZID=Europe/Brussels:${fmtLocal(start)}`);
     lines.push(`DTEND;TZID=Europe/Brussels:${fmtLocal(end)}`);
     lines.push(`SUMMARY:${summary}`);
+    const loc = m.location;
+    const cityLine = [loc?.postalCode, loc?.city].filter(Boolean).join(" ");
+    const address = [loc?.address, cityLine].filter(Boolean).join(", ");
+    if (address) lines.push(`LOCATION:${escapeIcs(address)}`);
+
     if (m.series?.name) {
       lines.push(`DESCRIPTION:${m.series.name}`);
     }
