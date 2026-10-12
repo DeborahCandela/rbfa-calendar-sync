@@ -134,7 +134,17 @@ async function fetchFixtures(teamId) {
   });
 
   const data = await res.json();
-  return data?.data?.teamCalendar || [];
+
+  if (data?.errors?.length) {
+    throw new Error("RBFA returned an error: " + data.errors[0].message);
+  }
+
+  const fixtures = data?.data?.teamCalendar;
+  if (!Array.isArray(fixtures) || fixtures.length === 0) {
+    throw new Error("No fixtures returned for team " + teamId);
+  }
+
+  return fixtures;
 }
 
 
