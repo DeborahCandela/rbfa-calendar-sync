@@ -30,8 +30,17 @@ const QUERY = `query GetTeamCalendar($teamId: ID!, $language: Language!, $sortBy
     awayTeam { name }
     outcome { status homeTeamGoals awayTeamGoals }
     series { name }
+    location { name city postalCode address }
   }
 }`;
+
+function escapeIcs(text) {
+  return String(text)
+    .replace(/\\/g, "\\\\")
+    .replace(/;/g, "\\;")
+    .replace(/,/g, "\\,")
+    .replace(/\r?\n/g, "\\n");
+}
 
 function buildIcs(calendarName, fixtures) {
   const lines = [
@@ -84,6 +93,12 @@ function buildIcs(calendarName, fixtures) {
     if (m.outcome?.homeTeamGoals != null && m.outcome?.awayTeamGoals != null) {
       summary += ` (${m.outcome.homeTeamGoals}-${m.outcome.awayTeamGoals})`;
     }
+
+    const loc = m.location;
+    const cityLine = [loc?.postalCode, loc?.city].filter(Boolean).join(" ");
+    const address = [loc?.address, cityLine].filter(Boolean).join(", ");
+    if (address) lines.push(`LOCATION:${escapeIcs(address)}`);
+
 
     lines.push("BEGIN:VEVENT");
     lines.push(`UID:rbfa-${m.id}@rbfa-calendar-sync`);
